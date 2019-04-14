@@ -1,0 +1,3 @@
+app:
+  server: ${KAFKA_SERVER:69.55.55.171}
+  topic: test-topic
