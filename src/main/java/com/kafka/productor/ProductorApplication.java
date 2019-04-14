@@ -53,8 +53,13 @@ public class ProductorApplication {
 				final ProducerRecord<Long, String> record = new ProducerRecord<>(TOPIC, index, "Mensagem de hash - " + index);
 				RecordMetadata metadata = producer.send(record).get();
 				long elapsedTime = System.currentTimeMillis() - time;
-				System.out.printf("Detalhes mensagem(key=%s value=%s) " + "meta(partition=%d, offset=%d) broker-server=%s time=%d\n",
-						record.key(), record.value(), metadata.partition(), metadata.offset(), kafka_server, elapsedTime);
+				System.out.printf("-------------- message productor ----------- \n");
+				System.out.println("Record Key " + record.key());
+				System.out.println("Record value " + record.value());
+				System.out.println("Record partition " + metadata.partition());
+				System.out.println("Record Time " + elapsedTime);
+				System.out.println("Record offset " + metadata.offset());
+				System.out.println("Server Kafka " + kafka_server);
 			}
 		} finally {
 			producer.flush();
