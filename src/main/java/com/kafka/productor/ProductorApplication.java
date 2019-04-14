@@ -16,6 +16,7 @@ public class ProductorApplication {
 	
 	private static String kafka_server = System.getenv("KAFKA_SERVER");
 	private static String kafka_topic = System.getenv("KAFKA_TOPIC");
+	private static String kafka_count_msg = System.getenv("KAFKA_COUNT_MSG");	
 
 	private final static String TOPIC = kafka_topic;
 	private final static String BOOTSTRAP_SERVERS = kafka_server+":9092";
@@ -24,7 +25,8 @@ public class ProductorApplication {
 		SpringApplication.run(ProductorApplication.class, args);
 		
 		if (args.length == 0) {
-	        runProducer(100);
+			int num_msg_kafka = Integer.parseInt(kafka_count_msg);
+	        runProducer(num_msg_kafka);
 	    } else {
 	        runProducer(Integer.parseInt(args[0]));
 	    }
@@ -51,8 +53,8 @@ public class ProductorApplication {
 				final ProducerRecord<Long, String> record = new ProducerRecord<>(TOPIC, index, "Mensagem de hash - " + index);
 				RecordMetadata metadata = producer.send(record).get();
 				long elapsedTime = System.currentTimeMillis() - time;
-				System.out.printf("Mensagem detalhes(key=%s value=%s) " + "meta(partition=%d, offset=%d) time=%d\n",
-						record.key(), record.value(), metadata.partition(), metadata.offset(), elapsedTime);
+				System.out.printf("Detalhes mensagem(key=%s value=%s) " + "meta(partition=%d, offset=%d) broker-server=%s time=%d\n",
+						record.key(), record.value(), metadata.partition(), metadata.offset(), kafka_server, elapsedTime);
 			}
 		} finally {
 			producer.flush();
