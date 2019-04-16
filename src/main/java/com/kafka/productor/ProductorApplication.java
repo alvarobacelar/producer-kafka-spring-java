@@ -1,11 +1,14 @@
 package com.kafka.productor;
 
 import java.util.Properties;
+
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +21,8 @@ public class ProductorApplication {
 	private static String kafka_topic = System.getenv("KAFKA_TOPIC");
 	private static String kafka_count_msg = System.getenv("KAFKA_COUNT_MSG");
 	private static String kafka_msg = System.getenv("KAFKA_MSG");
+	private static String kafka_key = System.getenv("KAFKA_KEY");
+	private static String kafka_pass = System.getenv("KAFKA_PASS");
 
 	private static String mensagem = null;
 
@@ -40,6 +45,10 @@ public class ProductorApplication {
 		Properties props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaProducer");
+		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafka_key);
+		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  kafka_pass);
+
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 		return new KafkaProducer<>(props);
