@@ -1,7 +1,7 @@
 version: '2'
 services:
    productor:
-     image: alvarobacelar/productor-kafka-java:latest
+     image: alvarobacelar/productor-kafka-java:ssl
      container_name: productor-kafka
      environment:
        - KAFKA_SERVER={{ hostvars[groups['kafka'][0]]['ansible_host'] }}:9092
